@@ -6,6 +6,20 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
  <h:head>
   <title>Facelet Title</title>
+
+  <script>
+   function ajaxHandler(data) {
+    /*if (data.status == 'success') {
+     $.modal.close();
+     }*/
+    //console.log(data.status);
+    if (data.status == 'begin') {
+     alert(1);
+    } else if (data.status == 'complete') {
+     alert(2);
+    }
+   }
+  </script>
  </h:head>
  <h:body>
   <h:outputLabel value="${homeController.mensagem}"/>
@@ -15,7 +29,8 @@
   <h:form>
    <h:inputText value="${testeController.palavra.conteudo}"/>
    <h:commandButton value="Insere">
-    <f:ajax event="click" execute="@form" render="formTb" listener="${testeController.insere}" />
+    <f:ajax event="click" execute="@form" render="formTb" listener="${testeController.insere}"
+            onevent="ajaxHandler"/>
    </h:commandButton>
   </h:form>
 
@@ -28,10 +43,12 @@
     <h:column>
      <f:facet name="header">Ação</f:facet>
      <h:commandLink value="Edita" rendered="#{not p.editable}">
-      <f:ajax event="click" listener="#{testeController.editAction(p)}" execute="@form" render="@form" />
+      <f:ajax event="click" listener="#{testeController.editAction(p)}" execute="@form" render="@form"
+              onevent="ajaxHandler"/>
      </h:commandLink>
      <h:commandLink value="Salva" rendered="#{p.editable}">
-      <f:ajax event="click" listener="#{testeController.saveAction(p)}" execute="@form" render="@form" />
+      <f:ajax event="click" listener="#{testeController.saveAction(p)}" execute="@form" render="@form"
+              onevent="ajaxHandler"/>
      </h:commandLink>
     </h:column>
    </h:dataTable>
