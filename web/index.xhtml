@@ -9,29 +9,41 @@
  </h:head>
  <h:body>
   <h:outputLabel value="${homeController.mensagem}"/>
-  
+
   <h:outputLabel value="${testeController.mensagem}"/>
-  
+
   <h:form>
-   <h:inputText value="${testeController.palavra}"/>
+   <h:inputText value="${testeController.palavra.conteudo}"/>
    <h:commandButton value="Insere">
-    <f:ajax event="click" execute="@form" render="tb" listener="${testeController.insere}" />
+    <f:ajax event="click" execute="@form" render="formTb" listener="${testeController.insere}" />
    </h:commandButton>
   </h:form>
-  
-  <h:dataTable id="tb" value="${testeController.lista}" var="p">
-   <h:column>
-    <h:outputLabel value="${p}"></h:outputLabel>
-   </h:column>
-  </h:dataTable>
-  
+
+  <h:form id="formTb">
+   <h:dataTable id="tb" value="${testeController.lista}" var="p">
+    <h:column>
+     <h:inputText value="${testeController.palavra.conteudo}" rendered="#{p.editable}"></h:inputText>
+     <h:outputText value="${p.conteudo}" rendered="#{not p.editable}"></h:outputText>
+    </h:column>
+    <h:column>
+     <f:facet name="header">Ação</f:facet>
+     <h:commandLink value="Edita" rendered="#{not p.editable}">
+      <f:ajax event="click" listener="#{testeController.editAction(p)}" execute="@form" render="@form" />
+     </h:commandLink>
+     <h:commandLink value="Salva" rendered="#{p.editable}">
+      <f:ajax event="click" listener="#{testeController.saveAction(p)}" execute="@form" render="@form" />
+     </h:commandLink>
+    </h:column>
+   </h:dataTable>
+  </h:form>
+
   <!--
   ver exemplo para paginação
   https://www.jeejava.com/effective-pagination-example-in-jsf-2/
   -->
-  
+
   <ui:include src="segunda.xhtml"/>
-  
+
  </h:body>
 </html>
 
